@@ -1,2 +1,2 @@
-# Ponc_C
+# PongC
 It's a pong game in terminal
