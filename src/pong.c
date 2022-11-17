@@ -1,11 +1,14 @@
 #include "pong.h"
 
 int main() {
+  int flag;
+  if (DrowGreat()) flag = 1;
+  else flag = 0;
   while (1) {
     if (goalL >= 5 || goalR >= 5) break;
 
     DrowScore(p_goalL, p_goalR);
-    drowPole(p_coordL, p_coordR, p_ballX, p_ballY);
+    drowPole(p_coordL, p_coordR, p_ballX, p_ballY, flag);
 
     // стенки прописаны
     coordR = right_rocket(coordR);
@@ -20,6 +23,31 @@ int main() {
     printf("\033c");
   }
   WinScore(goalL, goalR);
+}
+
+char DrowGreat() {
+  int flag = 0;
+  for (int x = 0; x <= 80; x++) printf("-");
+  printf("\n");
+  for (int y = 0; y <= 23; y++) {
+    for (int x = 0; x <= 80; x++) {
+        if (x == 30 && y == 10) printf("IT'S PING PONG GAME"); //printf("\033[102m*\033[0m");
+        if (x == 20 && y == 13) printf("WOULD YOU LOKE TO PLAY IT IN COLOUR?(Y/N)"); //printf("\033[102m*\033[0m");
+        if (x == 2 && y == 22) printf("USE A/Z TO PLAY LEFT PLAYER"); //printf("\033[102m*\033[0m");
+        if (x == 26 && y == 22) printf("USE K/M TO PLAY RIGHT PLAYER"); //printf("\033[102m*\033[0m");
+      // else if (x == 5 && (y == *coordL || y == *coordL + 1 || y == *coordL - 1)) printf("|");
+      //   else if (x == 75 && (y == *coordR || y == *coordR + 1 || y == *coordR - 1)) printf("|");
+           else printf(" ");
+          //else printf("\033[102m \033[0m");
+        }
+    printf(" \n");
+  }
+  for (int x = 0; x <= 80; x++) printf("-");
+  char colour = getchar();
+  if (colour == 'Y') flag = 1;
+  else flag = 0;
+  printf(" \n");
+  return flag;
 }
 
 void WinScore(int goalL, int goalR) {
@@ -56,19 +84,22 @@ void DrowScore(int* goalL, int* goalR) {
   printf("P2| SCORE: %d\n", *goalR);
 }
 
-void drowPole(int* coordL, int* coordR, int* ballX, int* ballY) {
+void drowPole(int* coordL, int* coordR, int* ballX, int* ballY, int flag) {
   for (int x = 0; x <= 80; x++) printf("-");
   printf("\n");
   for (int y = 0; y <= 23; y++) {
     for (int x = 0; x <= 80; x++) {
-        if (x == *ballX && y == *ballY) printf("\033[102m*\033[0m");
+        if (x == *ballX && y == *ballY && flag == 0) printf("*");
+        else if (x == *ballX && y == *ballY && flag == 1) printf("\033[102m*\033[0m");
       else if (x == 5 && (y == *coordL || y == *coordL + 1 || y == *coordL - 1)) printf("|");
         else if (x == 75 && (y == *coordR || y == *coordR + 1 || y == *coordR - 1)) printf("|");
+          else if (flag == 0) printf(" ");
           else printf("\033[102m \033[0m");
         }
     printf(" \n");
   }
   for (int x = 0; x <= 80; x++) printf("-");
+  printf(" \n");
 }
 
 int left_rocket(int roc_left) {  // управление левым игроком
