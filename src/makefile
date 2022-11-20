@@ -2,7 +2,7 @@ FLAGS = -Werror -Wextra -Wall
 CC = gcc
 
 
-all: build style clean
+all: build 
 
 style:
 	clang-format -i *.c

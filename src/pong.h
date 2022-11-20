@@ -1,4 +1,6 @@
 #include <stdio.h>
+//#include <ncurses.h>
+#include <termios.h>
 
 int coordL = 12, coordR = 12, ballY = 12;
 int ballX = 40;
@@ -12,9 +14,9 @@ int *p_coordL = &coordL, *p_coordR = &coordR, *p_ballY = &ballY,
 
 int left_rocket();
 int right_rocket();
-void WinScore();
+void WinScore(int*, int*);
 void DrowScore(int*, int*);
-void drowPole(int*, int*, int*, int*, int);
-char DrowGreat();
+void DrowPole(int*, int*, int*, int*, int);
+char DrowGreat(int, int);
 void ChangeVector(int*, int*, int*, int*, int*, int*);
 void AddScore(int*, int*, int*, int*, int*, int*);

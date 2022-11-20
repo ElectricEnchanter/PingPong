@@ -1,16 +1,16 @@
 #include "pong.h"
 
 int main() {
-  int flag;
-  if (DrowGreat()) flag = 1;
-  else flag = 0;
+  int ifColor = 0;
+  if (DrowGreat(0, ifColor)) ifColor = 1;
+  printf("\033c");
+
   while (1) {
-    if (goalL >= 5 || goalR >= 5) break;
+    if (goalL >= 2 || goalR >= 2) break;
 
     DrowScore(p_goalL, p_goalR);
-    drowPole(p_coordL, p_coordR, p_ballX, p_ballY, flag);
+    DrowPole(p_coordL, p_coordR, p_ballX, p_ballY, ifColor);
 
-    // стенки прописаны
     coordR = right_rocket(coordR);
     coordL = left_rocket(coordL);
 
@@ -22,45 +22,60 @@ int main() {
     AddScore(p_ballX, p_ballY, p_speedX, p_speedY, p_goalL, p_goalR);
     printf("\033c");
   }
-  WinScore(goalL, goalR);
+  DrowGreat(2, ifColor);
 }
 
-char DrowGreat() {
-  int flag = 0;
+char DrowGreat(int begining, int flag) {
   for (int x = 0; x <= 80; x++) printf("-");
   printf("\n");
   for (int y = 0; y <= 23; y++) {
     for (int x = 0; x <= 80; x++) {
+      if (begining == 0) {
         if (x == 30 && y == 10) printf("IT'S PING PONG GAME"); //printf("\033[102m*\033[0m");
-        if (x == 20 && y == 13) printf("WOULD YOU LOKE TO PLAY IT IN COLOUR?(Y/N)"); //printf("\033[102m*\033[0m");
-        if (x == 2 && y == 22) printf("USE A/Z TO PLAY LEFT PLAYER"); //printf("\033[102m*\033[0m");
+        if (x == 33 && y == 12) printf("(press enter)"); //printf("\033[102m*\033[0m");
+        if (x == 0 && y == 22) printf("USE A/Z TO PLAY LEFT PLAYER"); //printf("\033[102m*\033[0m");
         if (x == 26 && y == 22) printf("USE K/M TO PLAY RIGHT PLAYER"); //printf("\033[102m*\033[0m");
-      // else if (x == 5 && (y == *coordL || y == *coordL + 1 || y == *coordL - 1)) printf("|");
-      //   else if (x == 75 && (y == *coordR || y == *coordR + 1 || y == *coordR - 1)) printf("|");
-           else printf(" ");
-          //else printf("\033[102m \033[0m");
-        }
+        else printf(" ");
+      } else if (begining == 1) {
+        if (x == 20 && y == 13) {
+          printf("WOULD YOU LOKE TO PLAY IT IN COLOUR?(Y/N)");
+          begining = 2;
+        } else printf(" ");
+      } else if (begining == 2) {
+          if (x == 30 && y == 12) {
+          WinScore(p_goalL, p_goalR);
+      } else printf(" ");
+      }
+    }
     printf(" \n");
   }
   for (int x = 0; x <= 80; x++) printf("-");
-  char colour = getchar();
-  if (colour == 'Y') flag = 1;
-  else flag = 0;
+
   printf(" \n");
+  flag = getchar();
+  if (begining == 0 && flag == '\n') {
+    begining = 1;
+    printf("\033c");
+    DrowGreat(begining, flag);
+  }
+  if (begining == 1 && (flag == 'y' || flag == 'Y')) {
+    flag = 1;
+  }
   return flag;
 }
 
-void WinScore(int goalL, int goalR) {
-  if (goalL > goalR)
-    printf("Победил игрок PLAYER 1\n");
-  else if (goalL < goalR)
-    printf("Победил игрок PLAYER 2\n");
+
+void WinScore(int* goalL, int* goalR) {
+  if (*goalL > *goalR)
+    printf("AND THE WINNER IS: PLAYER 1");
+  else if (*goalL < *goalR)
+    printf("AND THE WINNER IS: PLAYER 2");
 }
 
 void ChangeVector(int* ballX, int* ballY, int *speedX, int *speedY, int* coordL, int* coordR) {
-  if (*ballY == 23 || *ballY == 0) *speedY = *speedY * (-1);
-  if (*ballX == 5 && (*ballY == *coordL || *ballY == *coordL + 1 || *ballY ==  *coordL - 1)) *speedX = *speedX * (-1);
-  if (*ballX == 75 && (*ballY ==  *coordR || *ballY == *coordR + 1 || *ballY == *coordR - 1)) *speedX = *speedX * (-1);
+  if (*ballY == 23 || *ballY == 0) *speedY *= (-1);
+  if (*ballX == 5 && (*ballY == *coordL || *ballY == *coordL + 1 || *ballY ==  *coordL - 1)) *speedX *= (-1);
+  if (*ballX == 75 && (*ballY ==  *coordR || *ballY == *coordR + 1 || *ballY == *coordR - 1)) *speedX *= (-1);
 }
 
 void AddScore(int* ballX, int* ballY, int* speedX, int* speedY, int* goalL,
@@ -69,13 +84,17 @@ void AddScore(int* ballX, int* ballY, int* speedX, int* speedY, int* goalL,
     *ballX = 40;
     *ballY = 13;
     *speedY = *speedY * (-1);
-    *goalR = *goalR + 1;
+    *goalR += 1;
+    *speedX *= (-1);
+    *speedY *= (-1);
   }
   if (*ballX == 80) {
     *ballX = 40;
     *ballY = 13;
     *speedX = *speedX * (-1);
-    *goalL = *goalL + 1;
+    *goalL += 1;
+    *speedX *= (1);
+    *speedY *= (1);
   }
 }
 
@@ -84,7 +103,7 @@ void DrowScore(int* goalL, int* goalR) {
   printf("P2| SCORE: %d\n", *goalR);
 }
 
-void drowPole(int* coordL, int* coordR, int* ballX, int* ballY, int flag) {
+void DrowPole(int* coordL, int* coordR, int* ballX, int* ballY, int flag) {
   for (int x = 0; x <= 80; x++) printf("-");
   printf("\n");
   for (int y = 0; y <= 23; y++) {
