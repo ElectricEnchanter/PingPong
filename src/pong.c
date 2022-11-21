@@ -2,11 +2,11 @@
 
 int main() {
   int ifColor = 0;
-  if (DrowGreat(0, ifColor)) ifColor = 1;
-  printf("\033c");
+  if (ifColour(ifColor)) ifColor=1;
+
 
   while (1) {
-    if (goalL >= 2 || goalR >= 2) break;
+    if (goalL >= 10 || goalR >= 10) break;
 
     DrowScore(p_goalL, p_goalR);
     DrowPole(p_coordL, p_coordR, p_ballX, p_ballY, ifColor);
@@ -23,6 +23,19 @@ int main() {
     printf("\033c");
   }
   DrowGreat(2, ifColor);
+  return 0;
+}
+
+int ifColour (int flag){
+  DrowGreat(0, 0);
+  if (getchar() == '\n') {
+    printf("\033c");
+    DrowGreat(1, 0);
+    }
+    char c = getchar();
+  if (c == 'y' || c == 'Y') flag = 1;
+    printf("\033c");
+  return flag;
 }
 
 char DrowGreat(int begining, int flag) {
@@ -31,15 +44,14 @@ char DrowGreat(int begining, int flag) {
   for (int y = 0; y <= 23; y++) {
     for (int x = 0; x <= 80; x++) {
       if (begining == 0) {
-        if (x == 30 && y == 10) printf("IT'S PING PONG GAME"); //printf("\033[102m*\033[0m");
-        if (x == 33 && y == 12) printf("(press enter)"); //printf("\033[102m*\033[0m");
-        if (x == 0 && y == 22) printf("USE A/Z TO PLAY LEFT PLAYER"); //printf("\033[102m*\033[0m");
-        if (x == 26 && y == 22) printf("USE K/M TO PLAY RIGHT PLAYER"); //printf("\033[102m*\033[0m");
+        if (x == 30 && y == 10) printf("IT'S PING PONG GAME");
+        if (x == 33 && y == 12) printf("(press enter)");
+        if (x == 0 && y == 22) printf("USE A/Z TO PLAY LEFT PLAYER");
+        if (x == 26 && y == 22) printf("USE K/M TO PLAY RIGHT PLAYER");
         else printf(" ");
       } else if (begining == 1) {
         if (x == 20 && y == 13) {
           printf("WOULD YOU LOKE TO PLAY IT IN COLOUR?(Y/N)");
-          begining = 2;
         } else printf(" ");
       } else if (begining == 2) {
           if (x == 30 && y == 12) {
@@ -52,15 +64,7 @@ char DrowGreat(int begining, int flag) {
   for (int x = 0; x <= 80; x++) printf("-");
 
   printf(" \n");
-  flag = getchar();
-  if (begining == 0 && flag == '\n') {
-    begining = 1;
-    printf("\033c");
-    DrowGreat(begining, flag);
-  }
-  if (begining == 1 && (flag == 'y' || flag == 'Y')) {
-    flag = 1;
-  }
+
   return flag;
 }
 
@@ -97,6 +101,25 @@ void AddScore(int* ballX, int* ballY, int* speedX, int* speedY, int* goalL,
     *speedY *= (1);
   }
 }
+
+// void AddScore(ball b) {
+//   if (b.ballX == 0) {
+//     b.ballX = 40;
+//     b.ballY = 13;
+//     b.speedY = b.speedY * (-1);
+//     b.goalR += 1;
+//     b.speedX *= (-1);
+//     b.speedY *= (-1);
+//   }
+//   if (b.ballX == 80) {
+//     b.ballX = 40;
+//     b.ballY = 13;
+//     b.speedX = b.speedX * (-1);
+//     b.goalL += 1;
+//     b.speedX *= (1);
+//     b.speedY *= (1);
+//   }
+// }
 
 void DrowScore(int* goalL, int* goalR) {
   printf("P1| SCORE: %d\n", *goalL);
