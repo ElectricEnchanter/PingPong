@@ -1,15 +1,23 @@
 FLAGS = -Werror -Wextra -Wall
 CC = gcc
 
-
-all: build 
+all: style pong clean
 
 style:
+	cp ../materials/.clang-format .
 	clang-format -i *.c
 	clang-format -n *.c
-build:
-	$(CC) $(FLAGS) pong.c -o pong
-	./pong
+	rm .clang-format
+
+pong: brains.o brains.a
+	$(CC) $(FLAGS) pong.c -L ../ brains.a -o ../pong.exe
+	./../pong.exe
+
+brains.a:
+	ar crv brains.a brains.o
+
+brains.o:
+	$(CC) $(FLAGS) -c brains.c -o brains.o
 
 clean:
-	rm pong
+	rm pong *o *out *a

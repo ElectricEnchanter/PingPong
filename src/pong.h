@@ -1,6 +1,9 @@
+#ifndef PONG_H
+#define PONG_H
+
 #include <stdio.h>
 
-typedef struct{
+struct ball {
     int coordL;
     int coordR;
     int ballY;
@@ -10,18 +13,19 @@ typedef struct{
     int goalR;
     int goalL;
     int lastGoal;
-} ball;
+};
 
-ball condition = {11, 11, 11, 39, 1, 1, 0, 0, 1};
+extern struct ball condition;
 
-void setDefault(ball *condition);
+void setDefault(struct ball *condition);
 int ifColour(int);
 int left_rocket();
 int right_rocket();
-void WinScore(ball *condition);
-void DrowScore(ball *condition);
-void DrowPole(ball *condition, int);
+void WinScore(struct ball *condition);
+void DrowScore(struct ball *condition);
+void DrowPole(struct ball *condition, int);
 char DrowGreat(int, int);
-void ChangeVector(ball *condition);
-void AddScore(ball *condition);
+void ChangeVector(struct ball *condition);
+void AddScore(struct ball *condition);
 
+#endif
