@@ -1,16 +1,4 @@
 #include <stdio.h>
-//#include <ncurses.h>
-#include <termios.h>
-
-int coordL = 12, coordR = 12, ballY = 12;
-int ballX = 40;
-int speedX = 1, speedY = 1;
-int goalL = 0, goalR = 0;
-
-int *p_coordL = &coordL, *p_coordR = &coordR, *p_ballY = &ballY,
-    *p_ballX = &ballX, *p_speedX = &speedX, *p_speedY = &speedY,
-    *p_goalL = &goalL, *p_goalR = &goalR;
-
 
 typedef struct{
     int coordL;
@@ -21,19 +9,19 @@ typedef struct{
     int speedY;
     int goalR;
     int goalL;
+    int lastGoal;
 } ball;
 
-ball b = {12, 12, 12, 40, 1, 1, 0, 0};
+ball condition = {11, 11, 11, 39, 1, 1, 0, 0, 1};
 
-
+void setDefault(ball *condition);
 int ifColour(int);
 int left_rocket();
 int right_rocket();
-void WinScore(int*, int*);
-void DrowScore(int*, int*);
-void DrowPole(int*, int*, int*, int*, int);
+void WinScore(ball *condition);
+void DrowScore(ball *condition);
+void DrowPole(ball *condition, int);
 char DrowGreat(int, int);
-void ChangeVector(int*, int*, int*, int*, int*, int*);
-void AddScore(int*, int*, int*, int*, int*, int*);
-//void AddScore(ball b);
+void ChangeVector(ball *condition);
+void AddScore(ball *condition);
 
