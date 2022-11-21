@@ -6,10 +6,17 @@ In the game you can choose black and white or color game mode as well as choose 
 ___
 
 # 🎮 **How to play?**
+You have two ways:
+
+First is you create new object file by using Makefile:
 1. Clone this repo to your local mashine.
 2. Go to src directory.
 3. Run MAKEFILE.
 4. Enjoy!
+
+And second is just run Pong.exe file
+1. Clone this repo to your local mashine.
+2. Run Pong.exe.
 
 ___
 

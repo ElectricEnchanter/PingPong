@@ -10,8 +10,8 @@ style:
 	rm .clang-format
 
 pong: brains.o brains.a
-	$(CC) $(FLAGS) pong.c -L ../ brains.a -o ../pong.exe
-	./../pong.exe
+	$(CC) $(FLAGS) pong.c -L ../ brains.a -o ../Pong.exe
+	./../Pong.exe
 
 brains.a:
 	ar crv brains.a brains.o
